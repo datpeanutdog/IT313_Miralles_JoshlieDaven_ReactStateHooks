@@ -1,56 +1,28 @@
-# Welcome to your Expo app 👋
+Lab Timer & Practice Tracker (React Native / Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Project Structure
+- App.js: entry point that renders LabScreen.
+- LabScreen: owns the solved state (starts at 0) and the isRunning state (starts at false). It calls useStopwatch(isRunning) and passes values down as props.
+- PracticeTracker: receives solved, onSolve, and onReset as props. Shows "Solved: {solved}", the "Solve +1" and "Reset" buttons, and "Great job!" once solved reaches 5.
+- Stopwatch: receives seconds and isRunning as props. Shows the elapsed time (MM:SS) and "Running..." or "Paused".
+- useStopwatch(isRunning): custom hook that keeps seconds in useState and uses useEffect with setInterval to add 1 every 1000ms while isRunning is true.
 
-## Get started
+React Concepts Used
+- useState: stores solved, isRunning, and seconds.
+- Functional update: Solve +1 uses setSolved(s => s + 1) so the update is always based on the latest value.
+- useEffect with cleanup: the interval is cleared when isRunning becomes false and when the component unmounts, so no timers keep running in the background.
+- Custom hook: useStopwatch separates the timer logic from the screen.
+- Conditional rendering: "Running..." / "Paused" in Stopwatch, and "Great job!" in PracticeTracker.
+- Lifting state up: PracticeTracker and Stopwatch are siblings that stay in sync through their shared parent, LabScreen.
+- Event handling: onPress handlers are passed as function references (onPress={handleSolve}), never called directly in the JSX.
 
-1. Install dependencies
+Expected Behavior
+- On load: "Solved: 0", "00:00", "Paused", and the Solve +1 / Reset / Start / Stop buttons are visible.
+- Pressing Solve +1 five times shows "Great job!". Pressing Reset sets the counter back to 0 and does not affect the timer.
+- Pressing Start begins counting every second and shows "Running...". Pressing Stop freezes the timer and shows "Paused".
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+How to Run in Expo Go
+1. Install Node.js on your computer.
+2. Install the Expo Go app on your phone (Android or iOS).
+3. Open a terminal in the project folder and install dependencies: npm install
+4. Start the app: npx expo start
